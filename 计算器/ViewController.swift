@@ -5,24 +5,40 @@
 //  Created by s20171103192 on 2018/11/7.
 //  Copyright © 2018 s20171103192. All rights reserved.
 //
-
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet weak var display: UILabel?
+    
+    @IBOutlet weak var display: UILabel!
     var userIsInTheMiddleOfTyping = false
-
     @IBAction func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
-        if userIsInTheMiddleOfTyping {
+        if userIsInTheMiddleOfTyping{
             let textCurrentlyInDisplay = display!.text!
             display!.text = textCurrentlyInDisplay + digit
         } else {
             display!.text = digit
             userIsInTheMiddleOfTyping = true
         }
-        
     }
-    
+    var displayValue: Double {
+        get {
+            return Double(display.text!)!
+        }
+        set {
+            display.text = String(newValue)
+        }
+    }
+    private var brain = CalculatorBrain()
+    @IBAction func performOperation(_ sender: UIButton) {
+        if userIsInTheMiddleOfTyping {
+            brain.setOperand(displayValue)
+            userIsInTheMiddleOfTyping = false
+        }
+        if let result = brain.result {
+            displayValue = result
+        }
+    }
 }
+
 
