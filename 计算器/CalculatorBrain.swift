@@ -8,7 +8,53 @@
 
 import Foundation
 struct CalculatorBrain {
-    var accumulator : Double?
+    private var accumulator : Double?
+    private enum Operation{
+        case constant(Double)
+        case unaryOperation((Double) -> Double)
+        case binaryOperation((Double,Double) -> Double)
+        case equals
+    }
+    private var operations:Dictionary<String,Operation> = [
+        "π" : Operation.constant(Double.pi),
+        "√" : Operation.unaryOperation(sqrt),
+        "cos" : Operation.unaryOperation(cos),
+        "±" : Operation.unaryOperation{( -$0 )},
+        "+" : Operation.binaryOperation{( $0 + $1 )},
+        "-" : Operation.binaryOperation{( $0 - $1 )},
+        "×" : Operation.binaryOperation{( $0 * $1 )},
+        "÷" : Operation.binaryOperation{( $0 / $1 )},
+        "=" : Operation.equals
+    
+    ]
+    private mutating func performOperation (_ symbol: String) {
+        if let Operation = operations[symbol] {
+            switch Operation {
+            case .constant(let value):
+                accumulator = value
+            case .unaryOperation(let function):
+                if(accumulator != nil) {
+                    accumulator = function(accumulator!)
+                }
+            case .binaryOperation(let function):
+                if(accumulator != nil) {
+                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
+                }
+            case .equals:
+                performPendingBinaryOperation()
+            }
+        }
+    }
+    
+    private var pendingBinaryOperation: PendingBinaryOperation?
+    private struct PendingBinaryOperation {
+        let function : ((Double,Double) -> Double)
+        let firstOperand : Double
+        func perform(with secondOperand: Double) -> Double {
+        return function(firstOperand, secondOperand)
+        }
+        
+    }
     
     mutating func setOperand(_ operand:Double)
     {
