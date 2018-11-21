@@ -16,6 +16,7 @@ struct CalculatorBrain {
         case equals
     }
     private var operations:Dictionary<String,Operation> = [
+        "AC" : Operation.constant(Double.init()),
         "π" : Operation.constant(Double.pi),
         "√" : Operation.unaryOperation(sqrt),
         "cos" : Operation.unaryOperation(cos),
@@ -27,7 +28,7 @@ struct CalculatorBrain {
         "=" : Operation.equals
     
     ]
-    private mutating func performOperation (_ symbol: String) {
+    mutating func performOperation (_ symbol: String) {
         if let Operation = operations[symbol] {
             switch Operation {
             case .constant(let value):
@@ -55,7 +56,12 @@ struct CalculatorBrain {
         }
         
     }
-    
+    private mutating func performPendingBinaryOperation() {
+        if pendingBinaryOperation != nil && accumulator != nil {
+            accumulator = pendingBinaryOperation!.perform(with: accumulator!)
+            pendingBinaryOperation = nil
+        }
+    }
     mutating func setOperand(_ operand:Double)
     {
         accumulator = operand
