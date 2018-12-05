@@ -16,10 +16,11 @@ struct CalculatorBrain {
         case equals
     }
     private var operations:Dictionary<String,Operation> = [
-        "AC" : Operation.constant(Double.init()),
+        "C" : Operation.constant(Double.init()),
         "π" : Operation.constant(Double.pi),
         "√" : Operation.unaryOperation(sqrt),
         "cos" : Operation.unaryOperation(cos),
+        "x²" : Operation.unaryOperation{($0 * $0)},
         "±" : Operation.unaryOperation{( -$0 )},
         "+" : Operation.binaryOperation{( $0 + $1 )},
         "-" : Operation.binaryOperation{( $0 - $1 )},
