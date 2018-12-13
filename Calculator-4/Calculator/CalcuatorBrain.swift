@@ -1,9 +1,9 @@
 //
-//  CalcuatorBrain.swift
-//  Calculator
+//  CalculatorBrain.swift
+//  计算器
 //
-//  Created by weiwu du on 2017/12/13.
-//  Copyright © 2017年 suning. All rights reserved.
+//  Created by s20171103192 on 2018/11/14.
+//  Copyright © 2018 s20171103192. All rights reserved.
 //
 
 import Foundation
