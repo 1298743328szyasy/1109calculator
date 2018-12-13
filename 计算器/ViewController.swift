@@ -21,7 +21,6 @@ class ViewController: UIViewController {
             userIsInTheMiddleOfTyping = true
         }
     }
-    var openStack = Array<Double>();
     var displayValue: Double {
         get {
             return Double(display.text!)!
